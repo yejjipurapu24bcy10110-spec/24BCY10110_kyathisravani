@@ -1,0 +1,60 @@
+show databases
+admin   40.00 KiB
+config  12.00 KiB
+local   72.00 KiB
+show dbs
+admin   40.00 KiB
+config  12.00 KiB
+local   72.00 KiB
+use vit
+switched to db vit
+db
+vit
+db.dropDatabase()
+{ ok: 1, dropped: 'vit' }
+show databases
+admin   40.00 KiB
+config  60.00 KiB
+local   72.00 KiB
+
+db
+vit
+db.createCollection("student")
+{ ok: 1 }
+show collections
+student
+db.student.drop()
+true
+show collections
+db.createCollection("employee")
+{ ok: 1 }
+
+show collections
+employee
+db.employee.insert({name:"sravani",department:"cse"})
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a19999823c56ac34a947865')
+  }
+}
+db.employee.insert({name:'kyathi',mark:90,location:'andhra'})
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a1999ea23c56ac34a947866')
+  }
+}
+db.employee.find()
+{
+  _id: ObjectId('6a19999823c56ac34a947865'),
+  name: 'sravani',
+  department: 'cse'
+}
+{
+  _id: ObjectId('6a1999ea23c56ac34a947866'),
+  name: 'kyathi',
+  mark: 90,
+  location: 'andhra'
+}
