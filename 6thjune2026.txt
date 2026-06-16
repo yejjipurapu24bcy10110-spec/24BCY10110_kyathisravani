@@ -1,0 +1,211 @@
+db.books.getIndexes()
+[ { v: 2, key: { _id: 1 }, name: '_id_' } ]
+use vit
+switched to db vit
+db.sales.createIndex({item:1,date:1},{unique:true,name:"item_date_unique"})
+item_date_unique
+db.sales.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  {
+    v: 2,
+    key: { item: 1, date: 1 },
+    name: 'item_date_unique',
+    unique: true
+  }
+]
+db.users.insertMany([
+   { email:  "john@test.com", name: "john"},
+   { email:  "jane@test.com", name: "jane"},
+]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a3135163bac03f0efe5aadd'),
+    '1': ObjectId('6a3135163bac03f0efe5aade')
+  }
+}
+db.users.createIndex({email:1},{unique:true});
+email_1
+db.users.insertOne({email:'john@test.com',name:"johnny"})
+MongoServerError: E11000 duplicate key error collection: vit.users index: email_1 dup key: { email: "john@test.com" }
+db.users.insertMany([
+   { email:  "john@test.com", name: "john"},
+   { email:  "john@test.com", name: "johny"},
+   { email:  "jane@test.com", name: "jane"},
+])
+MongoBulkWriteError: E11000 duplicate key error collection: vit.users index: email_1 dup key: { email: "john@test.com" }
+db.users.drop()
+true
+db.users.insertMany([
+   { email:  "john@test.com", name: "john"},
+   { email:  "john@test.com", name: "johny"},
+   { email:  "jane@test.com", name: "jane"},
+])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a313a243bac03f0efe5aae3'),
+    '1': ObjectId('6a313a243bac03f0efe5aae4'),
+    '2': ObjectId('6a313a243bac03f0efe5aae5')
+  }
+}
+db.users.createIndex({email: 1},{unique:true})
+MongoServerError[DuplicateKey]: Index build failed: 8f1a0f32-793e-49a8-ab36-ebd64e387bcc: Collection vit.users ( 5e823750-a611-4de5-8e23-f3199133a86f ) :: caused by :: E11000 duplicate key error collection: vit.users index: email_1 dup key: { email: "john@test.com" }
+db.users.deleteOne({name:'johny', email: 'john@test.com'});
+{
+  acknowledged: true,
+  deletedCount: 1
+}
+db.users.createIndex({email: 1},{unique:true})
+email_1
+db.locations.insertOne({
+	address: "Downtown San Jose, CA, USA",
+	lat: 37.335480,
+	long: -121.893028
+})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6a313ac13bac03f0efe5aae6')
+}
+db.locations.createIndex({
+	lat: 1,
+	long: 1
+},{ unique: true });
+lat_1_long_1
+db.locations.insertOne({
+	address: "Dev Bootcamp, San Jose, CA, USA",
+	lat: 37.335480,
+	long: -122.893028
+})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6a313b4a3bac03f0efe5aae7')
+}
+db.locations.insertOne({
+	address: "Central San Jose, CA, USA",
+	lat: 37.335480,
+	long: -121.893028
+})
+MongoServerError: E11000 duplicate key error collection: vit.locations index: lat_1_long_1 dup key: { lat: 37.33548, long: -121.893028 }
+db.sales.find()
+{
+  _id: 1,
+  item: 'Americanos',
+  price: 5,
+  size: 'Short',
+  quantity: 22,
+  date: 2022-01-15T08:00:00.000Z
+}
+{
+  _id: 2,
+  item: 'Cappuccino',
+  price: 6,
+  size: 'Short',
+  quantity: 12,
+  date: 2022-01-16T09:00:00.000Z
+}
+{
+  _id: 3,
+  item: 'Lattes',
+  price: 15,
+  size: 'Grande',
+  quantity: 25,
+  date: 2022-01-16T09:05:00.000Z
+}
+{
+  _id: 4,
+  item: 'Mochas',
+  price: 25,
+  size: 'Tall',
+  quantity: 11,
+  date: 2022-02-17T08:00:00.000Z
+}
+{
+  _id: 5,
+  item: 'Americanos',
+  price: 10,
+  size: 'Grande',
+  quantity: 12,
+  date: 2022-02-18T21:06:00.000Z
+}
+{
+  _id: 6,
+  item: 'Cappuccino',
+  price: 7,
+  size: 'Tall',
+  quantity: 20,
+  date: 2022-02-20T10:07:00.000Z
+}
+{
+  _id: 7,
+  item: 'Lattes',
+  price: 25,
+  size: 'Tall',
+  quantity: 30,
+  date: 2022-02-21T10:08:00.000Z
+}
+{
+  _id: 8,
+  item: 'Americanos',
+  price: 10,
+  size: 'Grande',
+  quantity: 21,
+  date: 2022-02-22T14:09:00.000Z
+}
+{
+  _id: 9,
+  item: 'Cappuccino',
+  price: 10,
+  size: 'Grande',
+  quantity: 17,
+  date: 2022-02-23T14:09:00.000Z
+}
+{
+  _id: 10,
+  item: 'Americanos',
+  price: 8,
+  size: 'Tall',
+  quantity: 15,
+  date: 2022-02-25T14:09:00.000Z
+}
+db.sales.createIndex({ item: 1, size: 1 }, { unique: true })
+MongoServerError[DuplicateKey]: Index build failed: 890aad31-c878-4785-af1e-d64869c5e469: Collection vit.sales ( c1c5cb4d-8128-4185-9c3e-d66b3e380f6f ) :: caused by :: E11000 duplicate key error collection: vit.sales index: item_1_size_1 dup key: { item: "Americanos", size: "Grande" }
+db.employee.find()
+{
+  _id: ObjectId('6a19999823c56ac34a947865'),
+  name: 'sravani',
+  department: 'cse'
+}
+{
+  _id: ObjectId('6a1999ea23c56ac34a947866'),
+  name: 'kyathi',
+  mark: 90,
+  location: 'andhra'
+}
+db.employee.createIndex({_id:1},{unique:true})
+MongoServerError[InvalidIndexSpecificationOption]: The field 'unique' is not valid for an _id index specification. Specification: { unique: true, name: "_id_1", key: { _id: 1 }, v: 2 }
+db.employee.insertMany({name:'janu',department:'eee',email:'janu@mongo.com'},{name:'pavani',department:'cse',email:'pavani@mongo.com'},{name:'bhanu',department:'mech',email:'bhanu@mongo.com'})
+MongoInvalidArgumentError: Argument "docs" must be an array of documents
+db.employee.insertMany([{name:'janu',department:'eee',email:'janu@mongo.com'},{name:'pavani',department:'cse',email:'pavani@mongo.com'},{name:'bhanu',department:'mech',email:'bhanu@mongo.com'}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a313e373bac03f0efe5aae9'),
+    '1': ObjectId('6a313e373bac03f0efe5aaea'),
+    '2': ObjectId('6a313e373bac03f0efe5aaeb')
+  }
+}
+db.employee.drop()
+true
+db.employee.insertMany([{name:'janu',department:'eee',email:'janu@mongo.com'},{name:'pavani',department:'cse',email:'pavani@mongo.com'},{name:'bhanu',department:'mech',email:'bhanu@mongo.com'}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a313ee33bac03f0efe5aaec'),
+    '1': ObjectId('6a313ee33bac03f0efe5aaed'),
+    '2': ObjectId('6a313ee33bac03f0efe5aaee')
+  }
+}
+db.employee.createIndex({email:1},{unique:true})
+email_1
